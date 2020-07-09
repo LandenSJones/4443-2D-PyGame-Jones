@@ -5,7 +5,7 @@
 ### Files
 |   #   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | main.py         | Main driver of my project that launches a window   |
+|   1   | <a href = "https://github.com/LandenSJones/4443-2D-PyGame-Jones/blob/master/Assignments/A03/main.py"/>main.py         | Main driver of my project that launches a window   |
 
 ### Instructions
 
