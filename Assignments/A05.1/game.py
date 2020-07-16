@@ -1,60 +1,150 @@
-#Landen Jones
-
-#Imports
-#--------------------
+# Import and initialize the pygame library
 import pygame
 import random
-#--------------------
+import json
+import sys
+import os
 
-#--------------------
-WIDTH = 640
-HEIGHT = 480
-WIDTHPLAYER = 50
-HEIGHTPLAYER = 50
-FPS = 30
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+from helper_module import mykwargs
 
-class Player(pygame.sprite.Sprite):
-    #Sprite for the Player
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)     #Pygames basic sprite constructor
-        self.image = pygame.Surface((WIDTHPLAYER, HEIGHTPLAYER))
-        self.image.fill(GREEN)
-        self.rect = self.image.get_rect()       #looks at the image and figures out what the image rect needs to be
-        self.rect.center = (WIDTH/2, HEIGHT - HEIGHTPLAYER/2)  #sets center of image at the center of the screen
-    def update(self):
-        self.rect.x += 5
-#--------------------
 
-#Creates the window :)
-pygame.init()
-pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("MY GAME TITLE")
-clock = pygame.time.Clock()
 
-allSprites = pygame.sprite.Group()
-player = Player()
-allSprites.add(player)
+# Import pygame.locals for easier access to key coordinates
+# Updated to conform to flake8 and black standards
+from pygame.locals import (
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    QUIT,
+)
 
-#Game Loop
-running = True
-while running:
-    clock.tick(FPS)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
-    #Update
-    allSprites.update()
-    #Draw            
-    screen.fill(BLACK)
-    allSprites.draw(screen)
+
+
+def assignVariables():
+    WIDTH = 500
+    HEIGHT = 500
+    PWIDTH = 50
+    PHEIGHT = 50
+    TITLE = 'Covid Game!'
+
+    argv = sys.argv[1:]
+    #Collect all args and kwargs from command console :)
+    args,kwargs = mykwargs(argv)
+    kwargs =  {k.lower(): v for k, v in kwargs.items()}
+    for key,value in kwargs.items():
+        print(key)
+        if key == 'width':
+            WIDTH = int(value)
+        if key == 'height':
+            HEIGHT = int(value)
+        if key == 'pheight':
+            PHEIGHT = int(value)
+        if key == 'pwidth':
+            PWIDTH = int(value)
+        if key == 'title':
+            TITLE = value
+    return WIDTH,HEIGHT,PWIDTH,PHEIGHT,TITLE
     
-    pygame.display.flip()
+    
+class Player:
+    def __init__(self,screen,image,x,y,PWIDTH,PHEIGHT,WIDTH,HEIGHT):
+        self.image = image
+        self.screen = screen
+        self.x = x/2
+        self.y = y-PHEIGHT
+        self.dx = 0
+        self.dy = 0
+        self.speed = 1
+        self.last_direction = None
+        self.w = WIDTH
+        self.h = HEIGHT
+        self.pwit = PWIDTH
+        self.phit = PHEIGHT
 
-pygame.quit()
+    def Draw(self):
+        self.screen.blit(self.image, (self.x, self.y))
+
+
+    def OnWorld(self):
+        w, h = pygame.display.get_surface().get_size()
+
+        return self.x > 0 and self.x < w and self.y > 0 and self.y < h
+
+    def GetDirection(self,keys):
+        if keys[K_UP]:
+            return K_UP
+        elif keys[K_DOWN]:
+            return K_DOWN
+        elif keys[K_LEFT]:
+            return K_LEFT
+        elif keys[K_RIGHT]:
+            return K_RIGHT
+        return None
+
+    def Move(self,keys):
+        direction = self.GetDirection(keys)
+        if self.OnWorld() or direction != self.last_direction:
+            if keys[K_UP]:
+                self.y -= self.speed
+                self.last_direction = K_UP
+            elif keys[K_DOWN] and self.y < self.h-self.phit:
+                self.y += self.speed
+                self.last_direction = K_DOWN
+            elif keys[K_LEFT]:
+                self.x -= self.speed
+                self.last_direction = K_LEFT
+            elif keys[K_RIGHT] and self.x < self.w-self.pwit:
+                self.x += self.speed
+                self.last_direction = K_RIGHT
+
+def main():
+        
+    WIDTH,HEIGHT,PWIDTH,PHEIGHT,TITLE = assignVariables()
+    
+
+    pygame.init()
+    
+    # sets the window title
+    pygame.display.set_caption(TITLE)
+
+    # set circle locaton
+    width = WIDTH
+    height = HEIGHT
+
+    # Set up the drawing window
+    screen = pygame.display.set_mode((width,height))
+    image = pygame.image.load(r'C:\Users\Landen\OneDrive\Desktop\A05.1\redSquare.png')
+    image = pygame.transform.scale(image,(PWIDTH,PHEIGHT))
+    # construct the ball
+    b1 = Player(screen,image,WIDTH,HEIGHT, PWIDTH, PHEIGHT, WIDTH, HEIGHT)
+
+    # Run until the user asks to quit
+    # game loop
+    running = True
+    while running:
+
+        screen.fill((88,88,88))
+
+        # Did the user click the window close button?
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # in a minute
+        pressed_keys = pygame.key.get_pressed()
+        b1.Move(pressed_keys)
+
+        b1.Draw()
+
+        pygame.display.flip()
+
+
+    # Done! Time to quit.
+    pygame.quit()
+
+if __name__=='__main__':
+    main()
