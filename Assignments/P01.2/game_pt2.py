@@ -4,6 +4,19 @@ import pygame
 import sys
 import os
 
+# Import pygame.locals for easier access to key coordinates
+# Updated to conform to flake8 and black standards
+from pygame.locals import (
+    K_UP,
+    K_DOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_ESCAPE,
+    KEYDOWN,
+    KEYUP,
+    QUIT,
+)
+
 class Scene(pygame.sprite.Sprite):
     def __init__(self,backgroundImg):
         pygame.sprite.Sprite.__init__(self)
@@ -32,29 +45,29 @@ class Player(pygame.sprite.Sprite):
         
     def Move(self):
         for event in pygame.event.get():
-            if (event.type == pygame.QUIT):
+            if (event.type == QUIT):
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
+            elif event.type == KEYDOWN:
+                if event.key == K_UP:
                     self.up = True
                     self.image = pygame.image.load(self.playerImages[0])
-                elif event.key == pygame.K_DOWN:
+                elif event.key == K_DOWN:
                     self.down = True
                     self.image = pygame.image.load(self.playerImages[1])
-                elif event.key == pygame.K_LEFT:
+                elif event.key == K_LEFT:
                     self.left = True
                     self.image = pygame.image.load(self.playerImages[2])
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == K_RIGHT:
                     self.right = True
                     self.image = pygame.image.load(self.playerImages[3])
-            elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
+            elif event.type == KEYUP:
+                if event.key == K_UP:
                     self.up = False
-                elif event.key == pygame.K_DOWN:
+                elif event.key == K_DOWN:
                     self.down = False
-                elif event.key == pygame.K_LEFT:
+                elif event.key == K_LEFT:
                     self.left = False
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == K_RIGHT:
                     self.right = False
                     
     def Collision(self,scene):
