@@ -13,6 +13,7 @@
 |   5   | <img src="https://github.com/LandenSJones/4443-2D-PyGame-Jones/blob/master/Assignments/P01.3/Media/playerLeft.png" width="50">Here is the player left used!|Screenshot of the image, png format|
 |   6   | <img src="https://github.com/LandenSJones/4443-2D-PyGame-Jones/blob/master/Assignments/P01.3/Media/WhiteHouse.png" width="500">Here is the background used!|Screenshot of the image, png format|
 |   7   | <img src="https://github.com/LandenSJones/4443-2D-PyGame-Jones/blob/master/Assignments/P01.2/Media/Screenshot1.png" width="500">|Screenshot of the game, png format|
+|   8   | <a href="https://github.com/LandenSJones/4443-2D-PyGame-Jones/tree/master/Assignments/P01.3/Media/sprite">Sprite Folder|Link to folder with sprite images|
 
 
 ### Instructions
